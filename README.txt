@@ -1,1 +1,1 @@
-This project has very simple use.
+Please see the index.html sample page for how to use. Visit http://www.kaiserapps.com/fun/backfun/ .

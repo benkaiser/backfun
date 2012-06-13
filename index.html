@@ -12,10 +12,11 @@
 		width: 800px;
 		margin: 20px auto;
 		border-radius: 25px;
-		border: 2px solid black;
+		box-shadow: 0px 0px 300px 0px white;
 		text-align: center;
 		background-color: white;
 		min-height: 800px;
+		padding: 10px;
 	}
 	</style>
 	
@@ -30,7 +31,7 @@
 <div id="center">
 	<h3>Test page for BackFun</h3>
 	<p>This is a useless page to test the background fun :)</p>
-	<button id="button">Load for 2 seconds</button>
+	<button id="button">Load for 5 seconds</button>
 </div>
 
 <!-- Add this javascript to the bottom of your page to start the canvas background -->
@@ -45,7 +46,7 @@ var load = new LoadingSign();
 
 $("#button").click(function(){
 	load.begin();
-	setTimeout(stop, 2000);
+	setTimeout(stop, 5000);
 });
 
 function stop(){

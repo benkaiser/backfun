@@ -123,7 +123,7 @@ function LoadingSign () {
     var size = 600;
     var w = 600;
 	var h = 600;
-	
+	var cnt = 0;
 	var circles = new Array();
 	var interval = 0;
 	canvas.width = w;
@@ -171,6 +171,7 @@ function LoadingSign () {
                 circles.splice(index,1);
             }
         }
+        cnt += .01;
     }
     
     this.begin = function(){
@@ -195,7 +196,8 @@ function LoadingSign () {
         // Use this if you want a constant circle there (a spawning circle almost)
         //drawCircle(ctx, "rgba(0,0,0,.5)", mousex, mousey, 10, 0, 0)
         
-        ctx.fillStyle = "rgb(0,0,0)";
+        var alpha = (cnt%1 < .5)?1-(cnt%1):cnt%1;
+        ctx.fillStyle = "rgba(0,0,0,"+alpha+")";
         ctx.font = '30px sans-serif';
 		ctx.textBaseline = 'bottom';
 		ctx.fillText('Loading...', size/2-50, size/2);

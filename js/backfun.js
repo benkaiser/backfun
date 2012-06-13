@@ -93,21 +93,12 @@ function Backfun (centerDivId,backgroundColor) {
                 c = circles[c];
                 drawCircle(ctx, c.color, c.x, c.y, c.s, 0, 0);        
         }
+        // Use this if you want a constant circle there (a spawning circle almost)
+        //drawCircle(ctx, "rgba(0,0,0,.5)", mousex, mousey, 10, 0, 0)
     }
     
     // function to simplify drawing of circles
-	var drawCircle = function(ctx, fillColor, x, y, radius, strokeWidth, strokeColor){
-	        ctx.fillStyle = fillColor;
-	        ctx.beginPath();
-	        ctx.arc(x,y,radius,0,Math.PI*2,false);
-	        ctx.closePath();
-	        if(strokeWidth != 0){
-	                ctx.lineWidth = strokeWidth;
-	                ctx.strokeStyle=strokeColor;
-	                ctx.stroke();
-	        }
-	        ctx.fill();
-	}
+	
     
     this.setBackgroundColor = function(bgcolor){
 	    this.bc = bgcolor;
@@ -126,6 +117,107 @@ function Backfun (centerDivId,backgroundColor) {
     }
 }
 
+function LoadingSign () {
+    var canvas = $("<canvas></canvas>").attr({ id :"loadCanvas" }).get(0);
+    var ctx = canvas.getContext('2d');
+    var size = 600;
+    var w = 600;
+	var h = 600;
+	
+	var circles = new Array();
+	var interval = 0;
+	canvas.width = w;
+	canvas.height = h;
+    canvas.style.position = "fixed";
+    canvas.style.zIndex = "100";
+    canvas.style.margin = "0";
+    canvas.style.padding = "0";
+    canvas.style.top = "50%";
+    canvas.style.left = "50%";
+    canvas.style.marginTop = "-"+(size/2)+"px";
+    canvas.style.marginLeft = "-"+(size/2)+"px";
+    canvas.style.display = "none";
+    
+    document.body.appendChild(canvas);
+    
+    var update = function() {
+	    // add new circle
+	    var tmpCol = hslToRgb(Math.random(),1,.5);
+        var tmp = {
+                x: size/2,
+                y: size/2,
+                s: Math.random()*20+5,
+                color: "rgba("+tmpCol.r+","+tmpCol.g+","+tmpCol.b+",.5)",
+                mx: Math.random()*20-10,
+                my: Math.random()*20-10
+        };
+        circles.push(tmp);
+        
+        // keep array short
+        /*if(circles.length > 100){
+                circles.splice(0,1);
+        }*/
+        
+        // move circles
+        for(c in circles){
+    		var index = c;
+            c = circles[c];
+            
+            c.x += c.mx * Math.random();
+            c.y += c.my * Math.random();
+            c.s -= .5;
+            
+            if(c.s < 1){
+                circles.splice(index,1);
+            }
+        }
+    }
+    
+    this.begin = function(){
+    	interval = setInterval(this.render, 1000/24);
+    }
+    
+    this.stop = function(){
+	    clearInterval(interval);
+	    circles = new Array();
+	    canvas.style.display = "none";
+    }
+    
+    this.render = function(){
+	    update();
+	    
+	    ctx.clearRect(0,0,size,size);
+        
+         for(c in circles){
+                c = circles[c];
+                drawCircle(ctx, c.color, c.x, c.y, c.s, 0, 0);        
+        }
+        // Use this if you want a constant circle there (a spawning circle almost)
+        //drawCircle(ctx, "rgba(0,0,0,.5)", mousex, mousey, 10, 0, 0)
+        
+        ctx.fillStyle = "rgb(0,0,0)";
+        ctx.font = '30px sans-serif';
+		ctx.textBaseline = 'bottom';
+		ctx.fillText('Loading...', size/2-50, size/2);
+        
+        // put it here to stop accidental startloading showing the old loading finish
+	    canvas.style.display = "block";
+    }
+}
+
+// utility function
+function drawCircle(ctx, fillColor, x, y, radius, strokeWidth, strokeColor){
+        ctx.fillStyle = fillColor;
+        ctx.beginPath();
+        ctx.arc(x,y,radius,0,Math.PI*2,false);
+        ctx.closePath();
+        if(strokeWidth != 0){
+                ctx.lineWidth = strokeWidth;
+                ctx.strokeStyle=strokeColor;
+                ctx.stroke();
+        }
+        ctx.fill();
+}
 
 // colour converting functions, used to create random color (see update function)
 function hslToRgb(h, s, l){

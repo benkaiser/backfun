@@ -53,8 +53,8 @@ function Backfun (centerDivId,backgroundColor) {
                 y: mousey,
                 s: Math.random()*20+5,
                 color: rgbToHex(hslToRgb(Math.random(),1,.5)),
-                mx: Math.random()*20-10,
-                my: Math.random()*20-10
+                mx: Math.random()*10-5,
+                my: Math.random()*10-5
         };
         circles.push(tmp);
         
@@ -68,8 +68,10 @@ function Backfun (centerDivId,backgroundColor) {
     		var index = c;
             c = circles[c];
             
-            c.x += c.mx * Math.random();
-            c.y += c.my * Math.random();
+            /*c.x += c.mx * Math.random();
+            c.y += c.my * Math.random();*/
+            c.x += c.mx;
+            c.y += c.my;
             c.s -= .5;
             
             if(c.s < 1){
@@ -93,8 +95,8 @@ function Backfun (centerDivId,backgroundColor) {
                 c = circles[c];
                 drawCircle(ctx, c.color, c.x, c.y, c.s, 0, 0);        
         }
-        // Use this if you want a constant circle there (a spawning circle almost)
-        //drawCircle(ctx, "rgba(0,0,0,.5)", mousex, mousey, 10, 0, 0)
+        //Use this if you want a constant circle there (a spawning circle almost)
+        drawCircle(ctx, "rgba(0,0,0,.5)", mousex, mousey, 10, 0, 0)
     }
     
     // function to simplify drawing of circles
@@ -148,8 +150,8 @@ function LoadingSign () {
                 y: size/2,
                 s: Math.random()*20+5,
                 color: "rgba("+tmpCol.r+","+tmpCol.g+","+tmpCol.b+",.5)",
-                mx: Math.random()*20-10,
-                my: Math.random()*20-10
+                mx: Math.random()*10-5,
+                my: Math.random()*10-5
         };
         circles.push(tmp);
         
@@ -163,8 +165,10 @@ function LoadingSign () {
     		var index = c;
             c = circles[c];
             
-            c.x += c.mx * Math.random();
-            c.y += c.my * Math.random();
+            /*c.x += c.mx * Math.random();
+            c.y += c.my * Math.random();*/
+            c.x += c.mx;
+            c.y += c.my;
             c.s -= .5;
             
             if(c.s < 1){

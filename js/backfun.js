@@ -15,6 +15,8 @@ function Backfun (centerDivId,backgroundColor) {
 	
 	var mousex = -100, mousey = -100;
 	var circles = new Array();
+	var poses = new Array();
+	var show = false;
 	
 	canvas.width = w;
 	canvas.height = h;
@@ -44,19 +46,52 @@ function Backfun (centerDivId,backgroundColor) {
 	        mousex = ev.pageX;
 	        mousey = ev.pageY - $(document).scrollTop();
 	}
-
+	
+	this.addMouse = function(colArr) {
+		poses.push({
+			mouse: true,
+			col: colArr
+		});
+		show = true;
+		return poses.length-1;
+	}
+	this.addPoint = function(x,y,colArr) {
+		poses.push({
+			mouse: false,
+			x: x,
+			y: y,
+			col: colArr
+		});
+		return poses.length-1;
+	}
+	
+	this.get = function(index) {
+		return poses[index];
+	}
     
     var update = function() {
-	    // add new circle
-        var tmp = {
-                x: mousex,
-                y: mousey,
-                s: Math.random()*20+5,
-                color: rgbToHex(hslToRgb(Math.random(),1,.5)),
-                mx: Math.random()*10-5,
-                my: Math.random()*10-5
-        };
-        circles.push(tmp);
+	    
+	    for(p in poses){
+	    	p = poses[p];
+	    	var x = mousex,y = mousey;
+	    	if(!p.mouse){x = p.x; y=p.y}
+	    	var color = "#FFF";
+	    	if(p.col !== undefined){
+		    	color = p.col[Math.floor(Math.random()*p.col.length)];
+	    	} else {
+		    	color = rgbToHex(hslToRgb(Math.random(),1,.5));
+	    	}
+		    // add new circle
+	        var tmp = {
+	                x: x,
+	                y: y,
+	                s: Math.random()*20+5,
+	                color: color,
+	                mx: Math.random()*10-5,
+	                my: Math.random()*10-5
+	        };
+	        circles.push(tmp);
+        }
         
         // keep array short
         /*if(circles.length > 100){
@@ -95,8 +130,10 @@ function Backfun (centerDivId,backgroundColor) {
                 c = circles[c];
                 drawCircle(ctx, c.color, c.x, c.y, c.s, 0, 0);        
         }
-        //Use this if you want a constant circle there (a spawning circle almost)
-        drawCircle(ctx, "rgba(0,0,0,.5)", mousex, mousey, 10, 0, 0)
+        if(show){
+	        //Use this if you want a constant circle there (a spawning circle almost)
+	        drawCircle(ctx, "rgba(0,0,0,.5)", mousex, mousey, 10, 0, 0)
+        }
     }
     
     // function to simplify drawing of circles
@@ -118,6 +155,8 @@ function Backfun (centerDivId,backgroundColor) {
 	    return this.cdiv;
     }
 }
+
+
 
 function LoadingSign () {
     var canvas = $("<canvas></canvas>").attr({ id :"loadCanvas" }).get(0);

@@ -14,7 +14,7 @@
 		border-radius: 25px;
 		box-shadow: 0px 0px 300px 0px white;
 		text-align: center;
-		background-color: white;
+		background-color: rgba(255,255,255,.9);
 		min-height: 800px;
 		padding: 10px;
 	}
@@ -38,8 +38,28 @@
 <script type="text/javascript">
 // the Backfun class takes (centerDivId,BackgroundColor) as its arguements
 var back = new Backfun("center","#44bbff");
+// add the mouse spawn point
+back.addMouse();
 // the start function sets off the animation
 back.start();
+
+
+// This is an added feature to add static spawn points
+// add static spawn point's to edges
+var p = new Array();
+p.push(back.addPoint(100,40,new Array("#F00","#0F0")));
+p.push(back.addPoint(100,40));
+setPs();
+
+$(window).resize(function(){
+	setPs();
+});
+
+function setPs() {
+	back.get(p[0]).x = window.innerWidth/2-400;
+	back.get(p[1]).x = window.innerWidth/2+400;
+}
+
 
 // initiate the loading symbol
 var load = new LoadingSign();
